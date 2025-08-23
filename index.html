@@ -1,0 +1,1812 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataSphere AI - AI Agent Services</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Resets & Variables */
+        :root {
+            /* Primary Brand Colors */
+            --brand-primary: #2563eb; /* Blue-600 */
+            --brand-secondary: #1e40af; /* Blue-800 - Darker Blue */
+            --brand-accent: #06b6d4; /* Cyan-500 - Lighter Blue/Teal */
+            /* Text Colors */
+            --text-dark: #1e293b; /* Slate-800 */
+            --text-medium: #475569; /* Slate-700 */
+            --text-light: #64748b; /* Slate-500 */
+            --text-white: #ffffff;
+            /* Background Colors */
+            --bg-light: #f8fafc; /* Slate-50 */
+            --bg-gradient-start: #e0f2fe; /* Blue-50 */
+            --bg-gradient-end: #eef2ff; /* Indigo-50 */
+            --card-bg: #ffffff;
+            /* Section Specific Gradients & Colors (Harmonized) */
+            --hero-gradient-start: #4a90e2; /* Softer Blue */
+            --hero-gradient-end: #6a5acd; /* Medium Purple */
+            --hero-text-light: rgba(255, 255, 255, 0.9);
+            --team-gradient-start: #8a2be2; /* Blue Violet */
+            --team-gradient-end: #da70d6; /* Orchid */
+            --team-text-light: #f3e5f5; /* Lighter Purple/Pink */
+
+            --contact-gradient-start: #3cb371; /* Medium Sea Green */
+            --contact-gradient-end: #20b2aa; /* Light Sea Green */
+            --contact-text-light: #e0ffe0; /* Lighter Green */
+            /* Border & Shadow */
+            --border-color: #e2e8f0; /* Slate-200 */
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.1);
+            --shadow-strong: rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth; /* Smooth scroll for anchor links */
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section-padding {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+                font-weight: 800;
+                color: var(--text-dark);
+                margin-bottom: 1rem;
+            }
+
+            .section-header p {
+                font-size: 1.25rem;
+                color: var(--text-medium);
+                max-width: 48rem;
+                margin: 0 auto;
+            }
+
+        .text-white {
+            color: var(--text-white);
+        }
+
+        .text-light-pink { /* Renamed for clarity, but still used for team section */
+            color: var(--team-text-light);
+        }
+
+        .text-light-green { /* Renamed for clarity, but still used for contact section */
+            color: var(--contact-text-light);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+        .btn-primary {
+            background-color: var(--card-bg);
+            color: var(--hero-gradient-end); /* Using hero gradient end for consistency */
+        }
+
+            .btn-primary:hover {
+                background-color: var(--bg-light);
+            }
+
+        .btn-secondary {
+            border: 2px solid var(--card-bg);
+            color: var(--card-bg);
+            background-color: transparent;
+        }
+
+            .btn-secondary:hover {
+                background-color: var(--card-bg);
+                color: var(--hero-gradient-end);
+            }
+
+        .btn-gradient {
+            background: linear-gradient(90deg, var(--brand-primary), var(--hero-gradient-end));
+            color: var(--text-white);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+            .btn-gradient:hover {
+                box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+            }
+
+        .btn-gradient-submit {
+            background: linear-gradient(90deg, var(--brand-primary), var(--hero-gradient-end));
+            color: var(--text-white);
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            width: 100%;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2);
+        }
+
+            .btn-gradient-submit:hover {
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            }
+
+        .btn-white-pink { /* Adjusted to fit team section colors */
+            background-color: var(--text-white);
+            color: var(--team-gradient-start);
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2); /* Shadow based on team start color */
+        }
+
+            .btn-white-pink:hover {
+                background-color: var(--team-text-light);
+                box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
+            }
+
+        .btn-call-us { /* Adjusted to fit contact section colors */
+            background-color: var(--text-white);
+            color: var(--contact-gradient-start);
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 20px rgba(60, 179, 113, 0.3); /* Shadow based on contact start color */
+        }
+
+            .btn-call-us:hover {
+                background-color: var(--contact-text-light);
+                box-shadow: 0 15px 30px rgba(60, 179, 113, 0.4);
+            }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+            .fade-in.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .floating-btn {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px var(--shadow-medium);
+            }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+        }
+
+        .navbar-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback for non-webkit browsers */
+        }
+
+            .navbar-brand span {
+                color: var(--brand-secondary);
+                -webkit-text-fill-color: var(--brand-secondary); /* Override for span */
+            }
+
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            position: relative;
+            color: var(--text-medium);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
+        }
+
+            .nav-item:hover {
+                color: var(--brand-primary);
+            }
+
+            .nav-item::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 3px;
+                bottom: -5px;
+                left: 0;
+                background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+                transition: width 0.3s ease;
+                border-radius: 2px;
+            }
+
+            .nav-item:hover::after {
+                width: 100%;
+            }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .language-switch {
+            background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-end));
+            color: var(--text-white);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.2); /* Shadow based on hero start color */
+        }
+
+            .language-switch:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+            }
+
+        .mobile-menu-btn {
+            display: none; /* Hidden on desktop */
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+
+        .mobile-menu-dropdown {
+            display: none; /* Hidden by default */
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-top: 1px solid rgba(226, 232, 240, 0.5);
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+            .mobile-menu-dropdown.show {
+                display: block;
+            }
+
+        .mobile-nav-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-medium);
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .mobile-nav-item:hover {
+                background-color: var(--bg-light);
+                color: var(--brand-primary);
+            }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 8rem 0 5rem;
+            background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-end));
+            color: var(--text-white);
+            overflow: hidden;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-shape-1 {
+            position: absolute;
+            top: 5rem;
+            left: 5rem;
+            width: 18rem;
+            height: 18rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .hero-shape-2 {
+            position: absolute;
+            bottom: 5rem;
+            right: 5rem;
+            width: 24rem;
+            height: 24rem;
+            background-color: rgba(106, 90, 205, 0.2); /* Based on hero-gradient-end */
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .hero-content-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-text-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            color: var(--hero-text-light);
+            line-height: 1.5;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .hero-image-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: scale(1);
+            transition: transform 0.5s ease;
+        }
+
+            .hero-image-content img:hover {
+                transform: scale(1.05);
+            }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 4rem 0;
+            background-color: var(--card-bg);
+        }
+
+        .stats-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background-color: var(--bg-light);
+            box-shadow: 0 5px 15px var(--shadow-light);
+        }
+
+            .stats-card .stats-number {
+                font-size: 2.25rem;
+                font-weight: 700;
+                color: var(--brand-primary);
+                margin-bottom: 0.5rem;
+            }
+
+            .stats-card .stats-label {
+                font-weight: 500;
+                color: var(--text-medium);
+            }
+
+        /* Services Section */
+        .services-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--card-bg), var(--bg-gradient-start));
+        }
+
+        .services-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px var(--shadow-medium);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .service-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                transition: left 0.5s ease;
+            }
+
+            .service-card:hover::before {
+                left: 100%;
+            }
+
+            .service-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 25px 50px var(--shadow-strong);
+                border-color: transparent;
+            }
+
+        .service-icon-container {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+            .service-icon-container i {
+                font-size: 2.5rem;
+                color: var(--text-white);
+            }
+
+        .icon-blue {
+            background-color: var(--brand-primary);
+        }
+
+        .icon-green {
+            background-color: var(--contact-gradient-start); /* Using contact gradient start for consistency */
+        }
+
+        .icon-purple {
+            background-color: var(--hero-gradient-end); /* Using hero gradient end for consistency */
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .service-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+            .service-features li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.75rem;
+                color: var(--text-light);
+                font-size: 0.875rem;
+            }
+
+        .feature-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+        }
+
+            .feature-icon i {
+                font-size: 0.75rem;
+                color: var(--text-white);
+            }
+
+            .feature-icon.icon-green {
+                background-color: var(--contact-gradient-start);
+            }
+
+            .feature-icon.icon-blue {
+                background-color: var(--brand-primary);
+            }
+
+            .feature-icon.icon-purple {
+                background-color: var(--hero-gradient-end);
+            }
+
+        .section-cta {
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* Team Section */
+        .team-section {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--team-gradient-start), var(--team-gradient-end));
+            color: var(--text-white);
+            overflow: hidden;
+        }
+
+        .team-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .team-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .team-shape-1 {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            width: 20rem;
+            height: 20rem;
+            background-color: rgba(218, 112, 214, 0.3); /* Based on team-gradient-end */
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .team-shape-2 {
+            position: absolute;
+            bottom: 25%;
+            right: 25%;
+            width: 24rem;
+            height: 24rem;
+            background-color: rgba(138, 43, 226, 0.3); /* Based on team-gradient-start */
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .team-content-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .team-image-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            transform: scale(1);
+            transition: transform 0.5s ease;
+        }
+
+            .team-image-content img:hover {
+                transform: scale(1.05);
+            }
+
+        .team-text-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-text-content p {
+            margin-bottom: 1.5rem;
+            color: var(--team-text-light);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .team-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-icon-circle {
+            width: 3rem;
+            height: 3rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+            .feature-icon-circle i {
+                font-size: 1.25rem;
+                color: var(--text-white);
+            }
+
+        .team-feature-item h4 {
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .team-feature-item p {
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Careers Section */
+        .careers-section {
+            padding: 5rem 0;
+            background-color: var(--card-bg);
+        }
+
+        .careers-form-container {
+            max-width: 768px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .career-form {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 40px var(--shadow-medium);
+            padding: 2.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .career-form label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            background-color: var(--bg-light);
+            font-size: 1rem;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+            .form-input:focus {
+                outline: none;
+                border-color: var(--brand-primary);
+                box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+                background-color: var(--text-white);
+            }
+
+            .form-input.input-error {
+                border-color: #ef4444; /* Red-500 */
+            }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 6rem;
+        }
+
+        .file-input {
+            padding: 0.5rem 1rem; /* Adjust padding for file input */
+        }
+
+            .file-input::-webkit-file-upload-button {
+                background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+                color: var(--text-white);
+                padding: 0.5rem 1rem;
+                border-radius: 9999px;
+                border: none;
+                cursor: pointer;
+                font-weight: 500;
+                margin-right: 1rem;
+                transition: all 0.3s ease;
+            }
+
+                .file-input::-webkit-file-upload-button:hover {
+                    opacity: 0.9;
+                }
+
+        .form-submit-area {
+            margin-top: 2rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--contact-gradient-start), var(--contact-gradient-end));
+            color: var(--text-white);
+            overflow: hidden;
+        }
+
+        .contact-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .contact-shape-1 {
+            position: absolute;
+            top: 5rem;
+            right: 5rem;
+            width: 20rem;
+            height: 20rem;
+            background-color: rgba(32, 178, 170, 0.3); /* Based on contact-gradient-end */
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .contact-shape-2 {
+            position: absolute;
+            bottom: 5rem;
+            left: 5rem;
+            width: 24rem;
+            height: 24rem;
+            background-color: rgba(60, 179, 113, 0.3); /* Based on contact-gradient-start */
+            border-radius: 50%;
+            filter: blur(3rem);
+        }
+
+        .contact-content-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info-card {
+            margin-bottom: 1.5rem;
+        }
+
+            .contact-info-card h3 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+            }
+
+        .office-details p {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--contact-text-light);
+        }
+
+            .office-details p i {
+                font-size: 1.125rem;
+                color: var(--text-white);
+            }
+
+        .contact-form-card {
+            padding: 2.5rem;
+        }
+
+        .contact-form label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form .form-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-white);
+        }
+
+            .contact-form .form-input::placeholder {
+                color: rgba(255, 255, 255, 0.6);
+            }
+
+            .contact-form .form-input:focus {
+                border-color: var(--text-white);
+                box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+        /* Footer */
+        .footer {
+            background-color: var(--text-dark);
+            color: var(--text-white);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-col {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--brand-primary);
+            margin-bottom: 1rem;
+        }
+
+            .footer-brand span {
+                color: var(--brand-accent);
+            }
+
+        .footer-col p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            color: var(--text-light);
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+            .social-icon:hover {
+                color: var(--brand-primary);
+            }
+
+        .footer-col h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-white);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+            .footer-col ul li {
+                margin-bottom: 0.75rem;
+            }
+
+                .footer-col ul li a {
+                    color: var(--text-light);
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+                }
+
+                    .footer-col ul li a:hover {
+                        color: var(--text-white);
+                    }
+
+        .contact-details p {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+        }
+
+            .contact-details p i {
+                font-size: 1rem;
+                color: var(--brand-primary);
+            }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        /* RTL adjustments */
+        [dir="rtl"] body {
+            font-family: 'Cairo', sans-serif; /* Assuming Cairo for Arabic */
+        }
+
+        [dir="rtl"] .nav-item::after {
+            left: auto;
+            right: 0;
+        }
+
+        [dir="rtl"] .hero-text-content,
+        [dir="rtl"] .service-card,
+        [dir="rtl"] .team-text-content,
+        [dir="rtl"] .careers-form-container,
+        [dir="rtl"] .contact-content-container,
+        [dir="rtl"] .footer-col {
+            text-align: right;
+        }
+
+        [dir="rtl"] .hero-buttons,
+        [dir="rtl"] .service-features,
+        [dir="rtl"] .team-features,
+        [dir="rtl"] .office-details,
+        [dir="rtl"] .social-links,
+        [dir="rtl"] .contact-details {
+            direction: rtl;
+        }
+
+        [dir="rtl"] .hero-buttons {
+            justify-content: flex-end;
+        }
+
+        [dir="rtl"] .service-icon-container {
+            margin: 0 auto 1.5rem; /* Center regardless of direction */
+        }
+
+        [dir="rtl"] .service-features li,
+        [dir="rtl"] .team-feature-item,
+        [dir="rtl"] .office-details p,
+        [dir="rtl"] .contact-details p {
+            flex-direction: row-reverse;
+        }
+
+            [dir="rtl"] .feature-icon,
+            [dir="rtl"] .feature-icon-circle,
+            [dir="rtl"] .office-details p i,
+            [dir="rtl"] .contact-details p i {
+                margin-right: 0;
+                margin-left: 0.75rem;
+            }
+
+        [dir="rtl"] .file-input::-webkit-file-upload-button {
+            margin-right: 0;
+            margin-left: 1rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            .navbar-menu {
+                gap: 1.5rem;
+            }
+
+            .hero-text-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text-content p {
+                font-size: 1.125rem;
+            }
+
+            .stats-card .stats-number {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .section-header p {
+                font-size: 1rem;
+            }
+
+            .service-card h3 {
+                font-size: 1.375rem;
+            }
+
+            .team-text-content h3 {
+                font-size: 1.5rem;
+            }
+
+            .contact-info-card h3 {
+                font-size: 1.375rem;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-content-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image-content {
+                order: -1; /* Image above text on mobile */
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-image-content {
+                order: -1; /* Image above text on mobile */
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-col p,
+            .footer-col ul,
+            .contact-details {
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .contact-details p i {
+                margin-right: 0.5rem;
+            }
+
+            [dir="rtl"] .hero-buttons {
+                justify-content: center;
+            }
+
+            [dir="rtl"] .social-links {
+                justify-content: center;
+            }
+
+            [dir="rtl"] .footer-col p,
+            [dir="rtl"] .footer-col ul,
+            [dir="rtl"] .contact-details {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-text-content p {
+                font-size: 1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-card .stats-number {
+                font-size: 1.75rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
+            }
+
+            .section-header p {
+                font-size: 0.9rem;
+            }
+
+            .service-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .team-text-content h3 {
+                font-size: 1.375rem;
+            }
+
+            .contact-info-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .career-form, .contact-form-card {
+                padding: 1.5rem;
+            }
+
+            .form-input {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#home" class="navbar-brand">DataSphere<span>AI</span></a>
+
+            <div class="navbar-menu">
+                <a href="#home" class="nav-item">Home</a>
+                <a href="#services" class="nav-item">Services</a>
+                <a href="#employee-assignment" class="nav-item">Team</a>
+                <a href="#careers" class="nav-item">Careers</a>
+                <a href="#contact" class="nav-item">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <button id="languageToggle" class="language-switch">
+                    EN/AR
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu-dropdown">
+            <a href="#home" class="mobile-nav-item">Home</a>
+            <a href="#services" class="mobile-nav-item">Services</a>
+            <a href="#employee-assignment" class="mobile-nav-item">Team</a>
+            <a href="#careers" class="mobile-nav-item">Careers</a>
+            <a href="#contact" class="mobile-nav-item">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero-section section-padding">
+        <div class="hero-overlay"></div>
+        <div class="hero-shapes" aria-hidden="true">
+            <div class="hero-shape-1"></div>
+            <div class="hero-shape-2"></div>
+        </div>
+
+        <div class="hero-content-container container">
+            <div class="hero-text-content fade-in">
+                <h1 data-en="Intelligent AI Solutions for Data-Driven Success" data-ar="حلول الذكاء الاصطناعي الذكية للنجاح القائم على البيانات">
+                    Intelligent AI Solutions for Data-Driven Success
+                </h1>
+                <p data-en="We build advanced AI agents and data science solutions that transform businesses through innovative technology and deep insights." data-ar="نحن نبني وكلاء الذكاء الاصطناعي المتقدم وحلول علم البيانات التي تحول الأعمال من خلال التكنولوجيا المبتكرة والرؤى العميقة.">
+                    We build advanced AI agents and data science solutions that transform businesses through innovative technology and deep insights.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-primary" data-en="Explore Services" data-ar="استكشاف الخدمات">
+                        <i class="fas fa-rocket"></i>
+                        <span>Explore Services</span>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary" data-en="Get Started" data-ar="ابدأ الآن">
+                        <i class="fas fa-play"></i>
+                        <span>Get Started</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image-content fade-in">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f7d3d6c6-6a1e-4836-ac05-014355cc210e.png" alt="Modern AI and data visualization dashboard showing real-time analytics and machine learning insights with clean interface design" loading="lazy" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section section-padding">
+        <div class="stats-container container">
+            <div class="stats-card hover-lift">
+                <div class="stats-number">150+</div>
+                <div class="stats-label" data-en="Projects Completed" data-ar="مشروع مكتمل">Projects Completed</div>
+            </div>
+            <div class="stats-card hover-lift">
+                <div class="stats-number">98%</div>
+                <div class="stats-label" data-en="Client Satisfaction" data-ar="رضا العملاء">Client Satisfaction</div>
+            </div>
+            <div class="stats-card hover-lift">
+                <div class="stats-number">50+</div>
+                <div class="stats-label" data-en="AI Experts" data-ar="خبير ذكاء اصطناعي">AI Experts</div>
+            </div>
+            <div class="stats-card hover-lift">
+                <div class="stats-number">24/7</div>
+                <div class="stats-label" data-en="Support" data-ar="دعم">Support</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section section-padding">
+        <div class="section-header">
+            <h2 data-en="Our AI-Powered Services" data-ar="خدماتنا المدعومة بالذكاء الاصطناعي">Our AI-Powered Services</h2>
+            <p data-en="Transform your business with our comprehensive suite of AI and data science solutions" data-ar="حول عملك مع مجموعة خدماتنا الشاملة للذكاء الاصطناعي وعلم البيانات">
+                Transform your business with our comprehensive suite of AI and data science solutions
+            </p>
+        </div>
+
+        <div class="services-grid container">
+            <!-- AI Agent Services -->
+            <div class="service-card">
+                <div class="service-icon-container icon-blue">
+                    <i class="fas fa-robot" aria-hidden="true"></i>
+                </div>
+                <h3 data-en="AI Agent Development" data-ar="تطوير وكلاء الذكاء الاصطناعي">AI Agent Development</h3>
+                <p data-en="Custom AI agents designed to automate complex tasks, enhance decision-making, and drive operational efficiency." data-ar="وكلاء الذكاء الاصطناعي المخصصة المصممة لأتمتة المهام المعقدة وتعزيز اتخاذ القرار ودفع الكفاءة التشغيلية.">
+                    Custom AI agents designed to automate complex tasks, enhance decision-making, and drive operational efficiency.
+                </p>
+                <ul class="service-features">
+                    <li><div class="feature-icon icon-green"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Intelligent Process Automation" data-ar="أتمتة العمليات الذكية">Intelligent Process Automation</span></li>
+                    <li><div class="feature-icon icon-green"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Natural Language Processing" data-ar="معالجة اللغة الطبيعية">Natural Language Processing</span></li>
+                    <li><div class="feature-icon icon-green"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Predictive Analytics" data-ar="التحليلات التنبؤية">Predictive Analytics</span></li>
+                </ul>
+            </div>
+
+            <!-- Data Science Solutions -->
+            <div class="service-card">
+                <div class="service-icon-container icon-green">
+                    <i class="fas fa-chart-line" aria-hidden="true"></i>
+                </div>
+                <h3 data-en="Data Science Solutions" data-ar="حلول علم البيانات">Data Science Solutions</h3>
+                <p data-en="Advanced data analytics and machine learning solutions that uncover hidden patterns and drive business growth." data-ar="حلول تحليل البيانات المتقدمة والتعلم الآلي التي تكشف الأنماط المخفية وتدفع نمو الأعمال.">
+                    Advanced data analytics and machine learning solutions that uncover hidden patterns and drive business growth.
+                </p>
+                <ul class="service-features">
+                    <li><div class="feature-icon icon-blue"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Machine Learning Models" data-ar="نماذج التعلم الآلي">Machine Learning Models</span></li>
+                    <li><div class="feature-icon icon-blue"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Data Visualization" data-ar="تصور البيانات">Data Visualization</span></li>
+                    <li><div class="feature-icon icon-blue"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Big Data Analytics" data-ar="تحليل البيانات الضخمة">Big Data Analytics</span></li>
+                </ul>
+            </div>
+
+            <!-- Corporate Website Development -->
+            <div class="service-card">
+                <div class="service-icon-container icon-purple">
+                    <i class="fas fa-globe" aria-hidden="true"></i>
+                </div>
+                <h3 data-en="Corporate Website Development" data-ar="تطوير المواقع الإلكترونية للشركات">Corporate Website Development</h3>
+                <p data-en="Professional, high-performance websites designed to showcase your brand and convert visitors into customers." data-ar="مواقع إلكترونية احترافية عالية الأداء مصممة لعرض علامتك التجارية وتحويل الزوار إلى عملاء.">
+                    Professional, high-performance websites designed to showcase your brand and convert visitors into customers.
+                </p>
+                <ul class="service-features">
+                    <li><div class="feature-icon icon-purple"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="Responsive Design" data-ar="تصميم متجاوب">Responsive Design</span></li>
+                    <li><div class="feature-icon icon-purple"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="SEO Optimization" data-ar="تحسين محركات البحث">SEO Optimization</span></li>
+                    <li><div class="feature-icon icon-purple"><i class="fas fa-check" aria-hidden="true"></i></div> <span data-en="E-commerce Solutions" data-ar="حلول التجارة الإلكترونية">E-commerce Solutions</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section-cta">
+            <a href="#contact" class="btn btn-gradient floating-btn" data-en="Request a Custom Solution" data-ar="اطلب حلاً مخصصاً">
+                <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                <span>Request a Custom Solution</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Employee Assignment Section (Team) -->
+    <section id="employee-assignment" class="team-section section-padding">
+        <div class="team-overlay"></div>
+        <div class="team-shapes" aria-hidden="true">
+            <div class="team-shape-1"></div>
+            <div class="team-shape-2"></div>
+        </div>
+
+        <div class="team-content-container container">
+            <div class="section-header text-white">
+                <h2 data-en="Team Management & Assignment" data-ar="إدارة الفريق والتعيين">Team Management & Assignment</h2>
+                <p class="text-light-pink" data-en="Efficiently manage and assign your AI experts to projects with our advanced team management system" data-ar="إدارة وتعيين خبراء الذكاء الاصطناعي بكفاءة للمشاريع من خلال نظام إدارة الفريق المتقدم">
+                    Efficiently manage and assign your AI experts to projects with our advanced team management system
+                </p>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-image-content fade-in">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7f1d1b3e-6f8a-4d7c-bd6c-7d2c8a1f3a3c.png" alt="Modern team management dashboard showing employee assignments, project timelines, and resource allocation with interactive interface" loading="lazy" />
+                </div>
+                <div class="team-text-content fade-in">
+                    <div class="glass-card">
+                        <h3 data-en="Assign Experts to Projects" data-ar="تعيين الخبراء للمشاريع">Assign Experts to Projects</h3>
+                        <p class="text-light-pink" data-en="Our sophisticated assignment system ensures the right AI experts are matched with the right projects based on skills, availability, and project requirements." data-ar="يضمن نظام التعيين المتطور لدينا مطابقة خبراء الذكاء الاصطناعي المناسبين مع المشاريع المناسبة بناءً على المهارات والتوافر ومتطلبات المشروع.">
+                            Our sophisticated assignment system ensures the right AI experts are matched with the right projects based on skills, availability, and project requirements.
+                        </p>
+                        <div class="team-features">
+                            <div class="team-feature-item">
+                                <div class="feature-icon-circle"><i class="fas fa-users" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4 data-en="Expert Matching" data-ar="مطابقة الخبراء">Expert Matching</h4>
+                                    <p class="text-light-pink" data-en="AI-powered skill matching algorithm" data-ar="خوارزمية مطابقة المهارات المدعومة بالذكاء الاصطناعي">AI-powered skill matching algorithm</p>
+                                </div>
+                            </div>
+                            <div class="team-feature-item">
+                                <div class="feature-icon-circle"><i class="fas fa-calendar-alt" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4 data-en="Availability Tracking" data-ar="تتبع التوفر">Availability Tracking</h4>
+                                    <p class="text-light-pink" data-en="Real-time resource allocation" data-ar="تخصيص الموارد في الوقت الفعلي">Real-time resource allocation</p>
+                                </div>
+                            </div>
+                            <div class="team-feature-item">
+                                <div class="feature-icon-circle"><i class="fas fa-chart-pie" aria-hidden="true"></i></div>
+                                <div>
+                                    <h4 data-en="Performance Analytics" data-ar="تحليلات الأداء">Performance Analytics</h4>
+                                    <p class="text-light-pink" data-en="Comprehensive project metrics" data-ar="مقاييس المشروع الشاملة">Comprehensive project metrics</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#contact" class="btn btn-white-pink" data-en="Request Access" data-ar="طلب الوصول">
+                            <i class="fas fa-lock-open" aria-hidden="true"></i>
+                            <span>Request Access</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section id="careers" class="careers-section section-padding">
+        <div class="section-header">
+            <h2 data-en="Join Our Elite Team" data-ar="انضم إلى فريقنا النخبوي">Join Our Elite Team</h2>
+            <p data-en="We're looking for exceptional talent to help us shape the future of AI and data science" data-ar="نحن نبحث عن مواهب استثنائية لمساعدتنا في تشكيل مستقبل الذكاء الاصطناعي وعلم البيانات">
+                We're looking for exceptional talent to help us shape the future of AI and data science
+            </p>
+        </div>
+
+        <div class="careers-form-container">
+            <form id="careerForm" action="https://formsubmit.co/ammaryasser618@gmail.com" method="POST" class="career-form" enctype="multipart/form-data">
+                <input type="hidden" name="_subject" value="New Career Application - DataSphere AI">
+                <input type="hidden" name="_template" value="table">
+
+                <div class="form-grid">
+                    <div>
+                        <label for="fullName" data-en="Full Name" data-ar="الاسم الكامل">Full Name</label>
+                        <input type="text" id="fullName" name="Full Name" required class="form-input">
+                    </div>
+                    <div>
+                        <label for="email" data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+                        <input type="email" id="email" name="Email" required class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div>
+                        <label for="phone" data-en="Phone Number" data-ar="رقم الهاتف">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone" required class="form-input">
+                    </div>
+                    <div>
+                        <label for="nationality" data-en="Nationality" data-ar="الجنسية">Nationality</label>
+                        <input type="text" id="nationality" name="Nationality" required class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div>
+                        <label for="experience" data-en="Years of Experience" data-ar="سنوات الخبرة">Years of Experience</label>
+                        <select id="experience" name="Years of Experience" required class="form-input">
+                            <option value="">Select...</option>
+                            <option value="0-2">0-2 years</option>
+                            <option value="3-5">3-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="position" data-en="Desired Position" data-ar="الوظيفة المطلوبة">Desired Position</label>
+                        <input type="text" id="position" name="Desired Position" required class="form-input">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="coverLetter" data-en="Cover Letter" data-ar="خطاب التغطية">Cover Letter</label>
+                    <textarea id="coverLetter" name="Cover Letter" rows="4" required class="form-input" placeholder="Why are you interested in joining our team?"></textarea>
+                </div>
+
+                <div>
+                    <label for="cv" data-en="Upload CV (PDF, max 5MB)" data-ar="رفع السيرة الذاتية (PDF, الحد الأقصى 5MB)">Upload CV (PDF, max 5MB)</label>
+                    <input type="file" id="cv" name="CV" accept=".pdf" required class="form-input file-input">
+                </div>
+
+                <div class="form-submit-area">
+                    <button type="submit" class="btn btn-gradient-submit" data-en="Submit Application" data-ar="إرسال الطلب">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        <span>Submit Application</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section section-padding">
+        <div class="contact-overlay"></div>
+        <div class="contact-shapes" aria-hidden="true">
+            <div class="contact-shape-1"></div>
+            <div class="contact-shape-2"></div>
+        </div>
+
+        <div class="contact-content-container container">
+            <div class="section-header text-white">
+                <h2 data-en="Get in Touch" data-ar="تواصل معنا">Get in Touch</h2>
+                <p class="text-light-green" data-en="Ready to transform your business with AI? Let's start the conversation." data-ar="مستعد لتحويل عملك بالذكاء الاصطناعي؟ لنبدأ المحادثة.">
+                    Ready to transform your business with AI? Let's start the conversation.
+                </p>
+            </div>
+
+            <div class="contact-grid">
+                <div>
+                    <div class="glass-card contact-info-card">
+                        <h3 data-en="Call Us Directly" data-ar="اتصل بنا مباشرة">Call Us Directly</h3>
+                        <a href="tel:0536782748" class="btn btn-call-us pulse">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <span>0536782748</span>
+                        </a>
+                    </div>
+
+                    <div class="glass-card contact-info-card">
+                        <h3 data-en="Office Information" data-ar="معلومات المكتب">Office Information</h3>
+                        <div class="office-details">
+                            <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> <span data-en="Riyadh, Saudi Arabia" data-ar="الرياض، المملكة العربية السعودية">Riyadh, Saudi Arabia</span></p>
+                            <p><i class="fas fa-clock" aria-hidden="true"></i> <span data-en="Sun-Thu: 9AM-6PM" data-ar="الأحد-الخميس: 9ص-6م">Sun-Thu: 9AM-6PM</span></p>
+                            <p><i class="fas fa-envelope" aria-hidden="true"></i> info@datasphere.ai</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card contact-form-card">
+                    <form id="contactForm" action="https://formsubmit.co/ammaryasser618@gmail.com" method="POST" class="contact-form">
+                        <input type="hidden" name="_subject" value="New Contact Form Submission - DataSphere AI">
+                        <input type="hidden" name="_template" value="table">
+
+                        <div>
+                            <label for="contactName" data-en="Your Name" data-ar="اسمك">Your Name</label>
+                            <input type="text" id="contactName" name="Name" required class="form-input">
+                        </div>
+
+                        <div>
+                            <label for="contactEmail" data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+                            <input type="email" id="contactEmail" name="Email" required class="form-input">
+                        </div>
+
+                        <div>
+                            <label for="contactMessage" data-en="Message" data-ar="الرسالة">Message</label>
+                            <textarea id="contactMessage" name="Message" rows="5" required class="form-input" placeholder="How can we help you?"></textarea>
+                        </div>
+
+                        <div class="form-submit-area">
+                            <button type="submit" class="btn btn-gradient-submit" data-en="Send Message" data-ar="إرسال الرسالة">
+                                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                <span>Send Message</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container container">
+            <div class="footer-col">
+                <a href="#home" class="footer-brand">DataSphere<span>AI</span></a>
+                <p data-en="Transforming businesses through intelligent AI solutions and data-driven insights." data-ar="تحويل الأعمال من خلال حلول الذكاء الاصطناعي الذكية والرؤى القائمة على البيانات.">
+                    Transforming businesses through intelligent AI solutions and data-driven insights.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h4>
+                <ul>
+                    <li><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+                    <li><a href="#services" data-en="Services" data-ar="الخدمات">Services</a></li>
+                    <li><a href="#employee-assignment" data-en="Team" data-ar="الفريق">Team</a></li>
+                    <li><a href="#careers" data-en="Careers" data-ar="الوظائف">Careers</a></li>
+                    <li><a href="#contact" data-en="Contact" data-ar="اتصل بنا">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-en="Our Services" data-ar="خدماتنا">Our Services</h4>
+                <ul>
+                    <li><a href="#" data-en="AI Agent Development" data-ar="تطوير وكلاء الذكاء الاصطناعي">AI Agent Development</a></li>
+                    <li><a href="#" data-en="Data Science Solutions" data-ar="حلول علم البيانات">Data Science Solutions</a></li>
+                    <li><a href="#" data-en="Website Development" data-ar="تطوير المواقع">Website Development</a></li>
+                    <li><a href="#" data-en="Consulting Services" data-ar="خدمات الاستشارات">Consulting Services</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 data-en="Contact Info" data-ar="معلومات الاتصال">Contact Info</h4>
+                <div class="contact-details">
+                    <p><i class="fas fa-phone" aria-hidden="true"></i> 0536782748</p>
+                    <p><i class="fas fa-envelope" aria-hidden="true"></i> info@datasphere.ai</p>
+                    <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> <span data-en="Riyadh, Saudi Arabia" data-ar="الرياض، المملكة العربية السعودية">Riyadh, Saudi Arabia</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p data-en="© 2024 DataSphere AI. All rights reserved." data-ar="© 2024 DataSphere AI. جميع الحقوق محفوظة.">
+                © 2024 DataSphere AI. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Language Toggle Functionality
+        let currentLanguage = 'en';
+
+        const languageToggle = document.getElementById('languageToggle');
+        const elementsToTranslate = document.querySelectorAll('[data-en], [data-ar]');
+
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            translatePage();
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = currentLanguage;
+        }
+
+        function translatePage() {
+            elementsToTranslate.forEach(element => {
+                const text = element.getAttribute(`data-${currentLanguage}`);
+                if (text) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = text;
+                    } else {
+                        element.textContent = text;
+                    }
+                }
+            });
+        }
+
+        languageToggle.addEventListener('click', toggleLanguage);
+
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('show');
+            mobileMenuBtn.setAttribute('aria-expanded', mobileMenu.classList.contains('show'));
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('show');
+                mobileMenuBtn.setAttribute('aria-expanded', false);
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    if (mobileMenu.classList.contains('show')) {
+                        mobileMenu.classList.remove('show');
+                        mobileMenuBtn.setAttribute('aria-expanded', false);
+                    }
+                }
+            });
+        });
+
+        // Form validation
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                const inputs = this.querySelectorAll('input[required], textarea[required], select[required]');
+                let isValid = true;
+
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('input-error');
+                    } else {
+                        input.classList.remove('input-error');
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    alert(currentLanguage === 'en' ? 'Please fill all required fields.' : 'يرجى ملء جميع الحقول المطلوبة.');
+                } else {
+                    // For FormSubmit.co, the form action handles the submission.
+                    // You might want to add a success message here after a short delay.
+                    alert(currentLanguage === 'en' ? 'Form submitted successfully! Please check your email for confirmation.' : 'تم إرسال النموذج بنجاح! يرجى التحقق من بريدك الإلكتروني للتأكيد.');
+                    this.reset(); // Reset form after successful submission
+                }
+            });
+        });
+
+        // Initialize animations (Intersection Observer)
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show'); // Optional: remove 'show' when out of view
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Initial translation on page load
+        document.addEventListener('DOMContentLoaded', translatePage);
+    </script>
+</body>
+</html>
